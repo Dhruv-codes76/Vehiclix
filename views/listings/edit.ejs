@@ -1,0 +1,152 @@
+<% layout("/layouts/basic.ejs") -%>
+  <body>
+    <br>
+    <form
+     method="POST" 
+     action="/listings/<%= listing._id %>?_method=PUT" 
+     novalidate class="needs-validation" 
+     enctype="multipart/form-data">
+      <div class="row offset-1">
+        <div class="col-9">
+          <h3 style="text-align: center;">Edit the Vehicle</h3>
+          <div class="mb-3">
+            <label for="vname" 
+            class="form-label">Name</label>
+            <input
+             name="listing[vname]" 
+             value="<%= listing.vname %>" 
+             type="text" 
+             class="form-control" 
+             required/>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="vtype" 
+                class="form-label">Type</label>
+                <input
+                 name="listing[vtype]" 
+                 value="<%= listing.vtype %>" 
+                 type="text" 
+                 class="form-control" 
+                 required/>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="vfuel" 
+                class="form-label">Fuel</label>
+                <input
+                 name="listing[vfuel]" 
+                 value="<%= listing.vfuel %>" 
+                 type="text" 
+                 class="form-control" 
+                 required/>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="vlimit" 
+                class="form-label">Limit</label>
+                <input
+                 name="listing[vlimit]" 
+                 value="<%= listing.vlimit %>" 
+                 type="number" 
+                 class="form-control" 
+                 required/>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="vpower" 
+                class="form-label">Power</label>
+                <input
+                 name="listing[vpower]" 
+                 value="<%= listing.vpower %>" 
+                 type="number" 
+                 class="form-control" 
+                 required/>
+              </div>
+            </div>
+          </div>
+    
+          <div class="mb-3">
+            <label for="vinfo" 
+            class="form-label">Information</label>
+            <textarea name="listing[vinfo]" class="form-control">
+              <%= listing.vinfo %></textarea>
+          </div>
+
+          <div class="mb-3">
+            Original Listing Image <br>
+            <img src="<%= originalImageUrl %>" alt="">
+          </div>
+
+          <label for="image" 
+            class="form-label">Upload New Image</label>
+          <div class="mb-3">
+            
+            <input
+             name="listing[image]" 
+             type="file" 
+             class="form-control" />
+          </div>
+        
+          <div class="mb-3">
+            <label for="cost" 
+            class="form-label">Cost</label>
+            <input
+             name="listing[cost]" 
+             value="<%= listing.cost %>" 
+             type="text" 
+             class="form-control" 
+             required/>
+          </div>
+          
+          <div class="mb-3">
+            <label for="location" 
+            class="form-label">Location</label>
+            <input
+            name="listing[location]"
+            value="<%= listing.location %>"
+            type="text" 
+            class="form-control" 
+            required/>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="city" 
+                class="form-label">City</label>
+                <input
+                name="listing[city]"
+                value="<%= listing.city %>"
+                type="text" 
+                class="form-control" 
+                required/>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="state" 
+                class="form-label">State</label>
+                <input
+                name="listing[state]"
+                value="<%= listing.state %>"
+                type="text" 
+                class="form-control" 
+                required/>
+              </div>
+            </div>
+          </div>
+          <br>
+          <button class="btn btn-dark add-btn mt-3 mt-5">Edit</button>
+        </div>
+      </div>
+    </form>
+  </body>

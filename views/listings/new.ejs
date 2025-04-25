@@ -1,0 +1,151 @@
+<% layout("/layouts/basic.ejs") -%>
+  <body>
+    <form
+     method="POST" 
+     action="/listings"
+     novalidate 
+     class="needs-validation" 
+     enctype="multipart/form-data">
+      <div class="row offset-1 mt-3">
+        <div class="col-9 ">
+          <h3 style="text-align: center;">Add vehicle</h3>
+          <div class="mb-3">
+            <label for="vname" 
+            class="form-label">Name</label>
+    
+            <input
+              name="listing[vname]" 
+              placeholder="Honda City" 
+              type="text" 
+              class="form-control" 
+              required
+              />
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              
+                <label for="vtype" 
+                class="form-label">Vehicle Type</label>
+        
+                <select id="vtype" name="listing[vtype]" class="form-control" required>
+                  <option value="car">Car</option>
+                  <option value="electric_car">Electric Car</option>
+                  <option value="bike">Bike</option>
+                  <option value="electric_bike">Electric Bike</option>
+                </select>
+            </div>
+          
+
+            <div class="col-md-6 mb-3">
+                <label for="vfuel" 
+                class="form-label">Fuel</label>
+
+                <select id="vfuel" name="listing[vfuel]" class="form-control" required>
+                  <option value="petrol">Petrol</option>
+                  <option value="diesel">Diesel</option>
+                </select>
+              
+            </div>
+          
+
+          <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="vlimit" 
+                class="form-label">Limit</label>
+                <input
+                  name="listing[vlimit]" 
+                  placeholder="8hrs/80kms" 
+                  type="number" 
+                  class="form-control" 
+                  required/>
+              </div>
+
+              <div class="col-md-5 mb-3">
+                <label for="vpower" 
+                class="form-label">Power</label>
+                <input
+                  name="listing[vpower]" 
+                  placeholder="125cc" 
+                  type="number" 
+                  class="form-control" 
+                  required/>
+              </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="vinfo" 
+              class="form-label">Vehicle Information</label>
+            <textarea
+              class="form-control"
+              name="listing[vinfo]"
+              placeholder="The Honda City is a stylish and spacious compact sedan known for its fuel-efficient engines and smooth manual or CVT transmissions."
+              required>
+            </textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="image" 
+              class="form-label">Upload Image</label>
+              <input
+              class="form-control"
+              name="listing[image]" 
+              type="file"
+              required/>
+          </div>
+
+          <div class="mb-3">
+            <label for="cost" 
+              class="form-label">Cost</label>
+              <input 
+                name="listing[cost]"
+                placeholder="Enter cost of rent" 
+                 type="text"
+                class="form-control"
+                required/>
+          </div>
+
+          <div class="mb-3">
+            <label for="location" 
+              class="form-label">location</label>
+            <input
+              name="listing[location]"
+              placeholder="enter location"
+              type="text"
+              class="form-control"
+              required/>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div>
+                <label for="city" 
+                  class="form-label">City</label>
+                <input 
+                  name="listing[city]" 
+                  placeholder="Enter your city" 
+                  type="text" 
+                  class="form-control"
+                  required/>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div>
+                <label for="state" 
+                  class="form-label">State</label>
+                <input 
+                  name="listing[state]" 
+                  placeholder="Enter your state" 
+                  type="text" 
+                  class="form-control"
+                  required/>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-dark add-btn mt-4 mb-5">Add</button>
+          <br>
+        </div>
+      </div>
+    </form>
+  </body>
