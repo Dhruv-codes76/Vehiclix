@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/stylesheets/admin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <%- layout("/layouts/basic.ejs") %>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>Admin</h2>
+                <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
+            </div>
+            <ul id="sidebar-menu">
+                <li class="<%= activeTab === 'users' ? 'active' : '' %>">
+                    <a href="/admin/dashboard?tab=users">Users</a>
+                </li>
+                <li class="<%= activeTab === 'listings' ? 'active' : '' %>">
+                    <a href="/admin/dashboard?tab=listings">Listings</a>
+                </li>
+                <li class="<%= activeTab === 'bookings' ? 'active' : '' %>">
+                    <a href="/admin/dashboard?tab=bookings">Bookings</a>
+                </li>
+                <li class="<%= activeTab === 'reviews' ? 'active' : '' %>">
+                    <a href="/admin/dashboard?tab=reviews">Reviews</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <% if (success) { %>
+                <div class="alert success"><%= success %></div>
+            <% } %>
+            <% if (error) { %>
+                <div class="alert error"><%= error %></div>
+            <% } %>
+
+            <% if (activeTab === 'users') { %>
+                <h2>Manage Users</h2>
+                <div class="user-list">
+                    <% users.forEach(user => { %>
+                        <div class="user-card">
+                            <div class="user-info">
+                                <p><%= user.email %></p>
+                                <span class="role-badge <%= user.role %>">
+                                    <%= user.role %>
+                                    <% if (user.role === 'superadmin') { %> 👑 Superadmin <% } %>
+                                </span>
+                            </div>
+                            <div class="user-actions">
+                                <% if (user.role !== 'superadmin') { %> 
+                                    <% if (user.role === 'user') { %>
+                                        <form action="/admin/users/<%= user._id %>/promote?_method=PUT" method="POST">
+                                            <button type="submit" class="btn promote">Promote to Admin</button>
+                                        </form>
+                                    <% } else if (user.role === 'admin') { %>
+                                        <form action="/admin/users/<%= user._id %>/demote?_method=PUT" method="POST">
+                                            <button type="submit" class="btn demote">Remove Admin</button>
+                                        </form>
+                                    <% } %>
+                                    <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn delete">Delete</button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+
+            <% } else if (activeTab === 'listings') { %>
+                <h2>Manage Listings</h2>
+                <div class="listing-list">
+                    <% listings.forEach(listing => { %>
+                        <div class="listing-card">
+                            <div class="listing-info">
+                                <h3><%= listing.vname %></h3>
+                                <p>Owner: <%= listing.owner.email %></p>
+                                <p>Location: <%= listing.location %></p>
+                            </div>
+                            <div class="listing-actions">
+                                <a href="/listings/<%= listing._id %>" class="btn view">View</a>
+                                <form action="/admin/listings/<%= listing._id %>?_method=DELETE" method="POST">
+                                    <button type="submit" class="btn delete">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+
+            <% } else if (activeTab === 'bookings') { %>
+                <h2>Manage Bookings</h2>
+
+                <!-- Present Bookings -->
+                <section class="booking-present">
+                    <h3>Present Bookings</h3>
+                    <div class="booking-list">
+                        <% const today = new Date(); %>
+                        <% const presentBookings = bookings.filter(b => today >= b.fromDate && today <= b.toDate); %>
+                        <% if (presentBookings.length > 0) { %>
+                            <% presentBookings.forEach(booking => { %>
+                                <div class="booking-card">
+                                    <div class="booking-info">
+                                        <p>
+                                            <strong>Vehicle:</strong> 
+                                            <%= booking.vehicle.vname %>
+                                            <a href="/listings/<%= booking.vehicle._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                        </p>
+                                        <p><strong>Booked By:</strong> <%= booking.bookedBy.username %> (<%= booking.bookedBy.email %>)</p>
+                                        <p><strong>From:</strong> <%= booking.fromDate.toDateString() %></p>
+                                        <p><strong>To:</strong> <%= booking.toDate.toDateString() %></p>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <p>No active bookings currently.</p>
+                        <% } %>
+                    </div>
+                </section>
+
+                <!-- All Bookings -->
+                <section class="booking-all" style="margin-top: 2rem;">
+                    <h3>All Bookings</h3>
+                    <div class="booking-list">
+                        <% bookings.forEach(booking => { %>
+                            <div class="booking-card">
+                                <div class="booking-info">
+                                    <p>
+                                        <strong>Vehicle:</strong> 
+                                        <%= booking.vehicle.vname %>
+                                        <a href="/listings/<%= booking.vehicle._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                    </p>
+                                    <p><strong>Booked By:</strong> <%= booking.bookedBy.username %> (<%= booking.bookedBy.email %>)</p>
+                                    <p><strong>From:</strong> <%= booking.fromDate.toDateString() %></p>
+                                    <p><strong>To:</strong> <%= booking.toDate.toDateString() %></p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </section>
+
+            <% } else if (activeTab === 'reviews') { %>
+                <h2>Manage Reviews</h2>
+                <div class="review-list">
+                    <% if (reviews && reviews.length > 0) { %>
+                        <% reviews.forEach(review => { %>
+                            <div class="review-card">
+                                <p><strong>User:</strong> <%= review.createdBy ? review.createdBy.username : "Unknown User" %></p>
+                                <p>
+                                    <strong>Vehicle:</strong>
+                                    <% if (review.listing) { %>
+                                        <%= review.listing.vname %>
+                                        <a href="/listings/<%= review.listing._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                    <% } else { %>
+                                        <span>unknown vehicle</span>
+                                    <% } %>
+                                </p>
+                                <p><strong>Rating:</strong> <%= review.rating %> / 5</p>
+                                <p><%= review.comment || "No comment provided." %></p>
+                                <form method="POST" action="/admin/reviews/<%= review._id %>?_method=DELETE">
+                                    <button class="btn delete">Delete</button>
+                                </form>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No reviews found.</p>
+                    <% } %>
+                </div>
+            <% } %>
+        </main>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        toggleBtn.addEventListener('click', () => {
+            sidebarMenu.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
