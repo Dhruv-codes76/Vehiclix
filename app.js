@@ -19,9 +19,12 @@ const passport = require("passport")
 const LocalStrategy = require("passport-local")
 const User = require("./models/user.js")
 
-const listingRouter = require("./routes/listing.js");
+const listingRouter = require("./routes/listing");
 const reviewRouter = require("./routes/review.js")
 const userRouter = require("./routes/user.js")
+const homeRoutes = require("./routes/home.js")
+const adminRoutes = require("./routes/admin");
+const { isLoggedIn } = require("./middleware.js");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/vehiclix";
 const dbUrl = process.env.ATLASDB_URL;
@@ -102,9 +105,40 @@ app.use((req,res,next)=>{
 //   res.send(registeredUser)
 // })
 
+//superadmin
+
+// app.get("/make-superadmin", async (req, res) => {
+//   try {
+//       // Check if the superadmin already exists
+//       const superadmin = await User.findOne({ email: "superadmin@example.com" });
+      
+//       if (superadmin) {
+//           return res.send("Superadmin already exists.");
+//       }
+
+//       // Create a new superadmin user
+//       const superadminUser = new User({
+//           email: "superadmin@example.com",
+//           username: "superadmin", // Required by passport-local-mongoose
+//           role: "superadmin"
+//       });
+
+//       // Register the superadmin user with a password
+//       await User.register(superadminUser, "superadminpassword");
+
+//       res.send("Superadmin created successfully.");
+//   } catch (err) {
+//       console.error(err);
+//       res.status(500).send("Error creating superadmin: " + err.message);
+//   }
+// });
+
+
+app.use("/", homeRoutes);
 app.use("/listings", listingRouter)
 app.use("/listings/:id/reviews", reviewRouter)
 app.use("/", userRouter)
+app.use("/admin", adminRoutes);
 
 //Page Not Found
 app.all("*",(req,res,next)=>{

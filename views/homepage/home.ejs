@@ -1,0 +1,247 @@
+<%- layout("/layouts/basic.ejs") -%>
+
+<style>
+  .hero {
+    background: url('/images/hero.jpg') center/cover no-repeat;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    text-shadow: 0px 2px 6px rgba(0,0,0,0.7);
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 2rem;
+  }
+
+  .hero button {
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 1.5rem;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  .hero button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .timeline-step {
+    position: relative;
+    padding-left: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .timeline-step::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #ccc;
+  }
+
+  .timeline-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #007bff;
+    color: white;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .vehicles, .reviews, .about, .newsletter, .cta {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .vehicle-card {
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+  }
+
+  .vehicle-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .vehicle-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .review-card {
+    margin: 1rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+  }
+
+  .about {
+    background: #f1f1f1;
+  }
+
+  .container-sm {
+    max-width: 700px;
+    margin: auto;
+    padding: 2rem 1rem;
+  }
+</style>
+
+<!-- Hero Section -->
+<div class="hero" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')">
+  <div class="hero-content">
+    <h1 class="display-4 mb-3">Explore Your Ride, Anytime</h1>
+    <p class="lead mb-4">Discover and compare bikes, cars, and EVs near you. No account needed — book when you're ready!</p>
+    <button class="btn btn-primary btn-lg" onclick="document.querySelector('.container-sm').scrollIntoView({ behavior: 'smooth' })">
+      Get Started
+    </button>
+  </div>
+</div>
+
+<!-- Step-by-Step Guide -->
+<section class="container-sm">
+  <h2 class="text-center mb-5">How It Works</h2>
+
+  <div class="timeline-step">
+    <div class="timeline-icon"><i class="fas fa-search"></i></div>
+    <h5>1. Browse Vehicles</h5>
+    <p>Start by exploring our fleet of cars, bikes, and electric vehicles. Filter by type, fuel, city, and price — no login needed!</p>
+  </div>
+
+  <div class="timeline-step">
+    <div class="timeline-icon"><i class="fas fa-info-circle"></i></div>
+    <h5>2. View Details</h5>
+    <p>Click on any listing to see detailed specifications, availability, and user reviews to help you choose the best ride.</p>
+  </div>
+
+  <div class="timeline-step">
+    <div class="timeline-icon"><i class="fas fa-user-plus"></i></div>
+    <h5>3. Sign Up & Book</h5>
+    <p>Once you've found your ride, you'll be prompted to create a free account to confirm your booking. Booking is quick and secure.</p>
+  </div>
+
+  <div class="timeline-step">
+    <div class="timeline-icon"><i class="fas fa-key"></i></div>
+    <h5>4. Pick Up & Drive</h5>
+    <p>Collect the vehicle at the specified location. Enjoy the ride — it's all yours for the duration you selected.</p>
+  </div>
+</section>
+
+<!-- Featured Vehicles -->
+<section class="vehicles">
+  <h2>Popular Vehicles</h2>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-3 m-3 vehicle-card">
+      <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Honda City">
+      <div class="p-3">
+        <h5>Honda City</h5><br>
+        <p class="text-muted small">Petrol | 90 HP | 300 km/day</p>
+      </div>
+    </div>
+
+    <div class="col-md-3 m-3 vehicle-card">
+      <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Royal Enfield">
+      <div class="p-3">
+        <h5>Royal Enfield Classic</h5>
+        <p class="text-muted small">Petrol | 350cc | 150 km/day</p>
+      </div>
+    </div>
+
+    <div class="col-md-3 m-3 vehicle-card">
+      <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nexon EV">
+      <div class="p-3">
+        <h5>Tata Nexon EV</h5>
+        <p class="text-muted small">Electric | 129 HP | 250 km/day</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews">
+  <h2>What Riders Say</h2>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-4 review-card">
+      <h6>@rahul_traveller</h6>
+      <p>"Rented the Honda City for a weekend trip. The car was clean and powerful. Booking was a breeze!"</p>
+      <p>⭐ 5/5</p>
+    </div>
+
+    <div class="col-md-4 review-card">
+      <h6>@neha.biker</h6>
+      <p>"Loved the Royal Enfield ride. It was smooth, sturdy, and exactly what I needed for my solo ride."</p>
+      <p>⭐ 4/5</p>
+    </div>
+
+    <div class="col-md-4 review-card">
+      <h6>@eco_vibes</h6>
+      <p>"Tried the Nexon EV — first time with electric, and I'm impressed. Quiet, eco-friendly, and reliable."</p>
+      <p>⭐ 5/5</p>
+    </div>
+  </div>
+</section>
+
+<!-- About Us -->
+<section class="about">
+  <div class="container">
+    <h2>About EasyRide</h2>
+    <p>
+      EasyRide was built with one goal — to make vehicle rentals effortless for everyone. Whether you're commuting or exploring, our platform offers a range of trusted vehicles at competitive prices. No hidden costs, no paperwork headaches. Just pure riding freedom.
+    </p>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta bg-light">
+  <div class="container text-center">
+    <h2 class="mb-3">Ready to Ride or Rent?</h2>
+    <p class="lead">Browse vehicles or list your own — EasyRide is open to everyone.</p>
+    <a href="/listings" class="btn btn-dark m-2">Explore Vehicles</a>
+    <a href="/listings/new" class="btn btn-outline-primary m-2">List Your Vehicle</a>
+  </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="newsletter bg-dark text-white text-center">
+  <div class="container">
+    <h4>Stay Updated</h4>
+    <p>Get the latest offers, vehicle drops, and travel tips in your inbox.</p>
+    <form class="row justify-content-center">
+      <div class="col-md-4">
+        <input type="email" class="form-control" placeholder="Your email address" required>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100">Subscribe</button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | Vehiclix - Final Year Project</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --text: #334155;
+            --light-bg: #f8fafc;
+            --border: #e2e8f0;
+            --warning: #dc2626;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            background-color: #ffffff;
+        }
+        .terms-container {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.4rem;
+        }
+        .content {
+            padding: 0 2rem 2rem;
+        }
+        .warning-banner {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0 0.375rem 0.375rem 0;
+        }
+        ul {
+            padding-left: 1.25rem;
+        }
+        li {
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+        li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: -1rem;
+        }
+        .highlight {
+            background-color: #eff6ff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+        }
+        .project-info {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+        }
+        .last-updated {
+            text-align: right;
+            font-style: italic;
+            color: #64748b;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="terms-container">
+        <header>
+            <h1>Vehiclix Terms & Conditions</h1>
+            <p class="subtitle">Final Year B.E. Computer Engineering Project</p>
+        </header>
+
+        <div class="content">
+            <div class="warning-banner">
+                <strong>Important:</strong> This is an academic prototype only. No real services or transactions are enabled.
+            </div>
+
+            <h2>1. Academic Purpose Declaration</h2>
+            <p>Vehiclix is developed solely for fulfilling final year project requirements at Mumbai University's Computer Engineering Department (2023-24).</p>
+            <ul>
+                <li>Not a commercially deployed system</li>
+                <li>All functionality is simulated for demonstration</li>
+                <li>No actual vehicles are rented through this prototype</li>
+            </ul>
+
+            <h2>2. Demonstration Usage Terms</h2>
+            <p>When interacting with this academic project:</p>
+            <ul>
+                <li>Use only <span class="highlight">test/dummy data</span> (e.g., "demo_user", "test@vehiclix.demo")</li>
+                <li>Never input real personal information or payment details</li>
+                <li>All "bookings" are simulated processes with no real-world effect</li>
+            </ul>
+
+            <h2>3. Project Limitations</h2>
+            <p>This prototype has intentional constraints:</p>
+            <ul>
+                <li>Features may be partially implemented for demonstration</li>
+                <li>UI/UX focuses on academic requirements rather than production standards</li>
+                <li>Database resets occur frequently during development</li>
+            </ul>
+
+            <h2>4. Intellectual Property</h2>
+            <p>As an academic project:</p>
+            <ul>
+                <li>All code and documentation remains property of the developing students</li>
+                <li>Project may be demonstrated in academic settings only</li>
+                <li>Reference implementations may be used with proper attribution</li>
+            </ul>
+
+            <div class="project-info">
+                <h2>Development Team</h2>
+                <p><strong>Project Title:</strong> Vehiclix - Vehicle Rental Management System</p>
+                <p><strong>Team Members:</strong> </p>
+                <ul>
+                    <li>Rohan Mehta (BEComp/2023/01)</li>
+                    <li>Priya Sharma (BEComp/2023/02)</li>
+                    <li>Amit Patel (BEComp/2023/03)</li>
+                </ul>
+                <p><strong>Project Guide:</strong> Prof. S. Deshmukh</p>
+                <p><strong>Academic Institution:</strong> Mumbai University, Department of Computer Engineering</p>
+            </div>
+
+            <p class="last-updated">Document Version: 1.0 | Last Updated: 15/05/2023</p>
+        </div>
+    </div>
+</body>
+</html>

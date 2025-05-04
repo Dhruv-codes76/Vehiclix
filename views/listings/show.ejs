@@ -1,134 +1,346 @@
 <% layout("/layouts/basic") -%>
+
 <script>
   const mapToken = "<%= process.env.MAP_TOKEN %>";
   const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
   const listing = <%- JSON.stringify(listing) %>;
 </script>
-  <body>
-    <div class="row">
-       <div class="col-8 offset-1">
-        <h3><%= listing.vname %></h3>
-        </div> 
-        <div class="card listing-card mt-3 col-8 offset-1">
-          <div class="card-title mb-2">
+
+<body class="bg-light">
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card shadow-sm border-0 overflow-hidden">
+          <!-- Vehicle Image with Category Badge -->
+          <div class="card-header p-0 position-relative">
+            <img class="card-img-top img-fluid w-100" src="<%= listing.image.url %>" alt="<%= listing.vname %>" style="height: 400px; object-fit: cover;">
+            <div class="position-absolute bottom-0 end-0 m-3">
+              <div class="d-flex align-items-center bg-white bg-opacity-90 px-3 py-2 rounded-pill shadow-sm">
+                <% if(listing.category === 'car') { %>
+                  <i class="fas fa-car me-2 text-primary fs-5"></i>
+                <% } else if(listing.category === 'bike') { %>
+                  <i class="fas fa-motorcycle me-2 text-primary fs-5"></i>
+                <% } else if(listing.category === 'scooter') { %>
+                  <i class="fas fa-scooter me-2 text-primary fs-5"></i>
+                <% } else { %>
+                  <i class="fas fa-car-side me-2 text-primary fs-5"></i>
+                <% } %>
+                <span class="fw-bold text-dark text-capitalize fs-6"><%= listing.category %></span>
+              </div>
+            </div>
           </div>
-          <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="...">
-         <div class="card-body">
-          <i>Owned by: <%= listing.owner.username %></i>
-           <p class="card-text"><%= listing.vinfo %> <br>
-           <%= listing.vtype %> <br>
-           <%= listing.vfuel %> <br>
-           <%= listing.vlimit %> <br>
-           <%= listing.vpower %> <br>
-           <%= listing.cost %> <br>
-           <%= listing.location %> <br>
-           <%= listing.city %> <br>
-           <%= listing.state %> <br>
-           </p>
-           </div>
-           </div>
-           <!-- <div class="power">
-            <i class="fa-solid fa-gears"></i>
-            
-           </div>
 
-           <div class="fuel">
-            <i class="fa-solid fa-gas-pump"></i>
-           
-           </div>
-
-           <div class="fuel">
-            <i class="fa-solid fa-gas-pump"></i>
-           
-           </div> -->
-
-           
-        </div>
-        
-        <% if(currUser && listing.owner._id.equals(currUser._id)) {%>
-        <div class="btns">
-          <a
-            href="/listings/<%= listing._id %>/edit" 
-            class="btn btn-dark  offset-1 mb-5">Edit</a>
-
-          <form method="POST" 
-            action="/listings/<%=listing._id%>?_method=DELETE">
-            
-            <button class="btn btn-dark offset-2 mb-5">Delete</button>
-          </form> 
-        </div>
-       <% } %>
-        
-        <div class="col-8 offset-1 mb-3">
-          <% if(currUser) {%>
-            <hr>
-          <h4>Leave a Review</h4>
-          <form method="POST" action="/listings/<%= listing._id %>/reviews">
-            
-            <div class=" mt-3">
-              <label for="rating" class="form-label">Rating</label>
-              <fieldset class="starability-coinFlip">
-                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                <label for="first-rate1" title="Terrible">1 star</label>
-                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                <label for="first-rate2" title="Not good">2 stars</label>
-                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                <label for="first-rate3" title="Average">3 stars</label>
-                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                <label for="first-rate4" title="Very good">4 stars</label>
-                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                <label for="first-rate5" title="Amazing">5 stars</label>
-              </fieldset>
-  
+          <!-- Vehicle Details -->
+          <div class="card-body p-4">
+            <div class="text-center mb-4">
+              <h2 class="card-title mb-2"><%= listing.vname %></h2>
+              <p class="text-muted">Owned by @<%= listing.owner.username %></p>
             </div>
 
-            <div class="mb-3 ">
-              <label
-               class="form-label" 
-               for="comment">Leave a comment</label>
-
-              <textarea
-               name="review[comment]" 
-               id="comment" 
-               cols="30" 
-               rows="5" 
-               class="form-control" 
-               required>
-              </textarea>
-            </div>
-            <button class="btn btn-outline-dark">Submit</button>
-          </form>
-          <hr>
-          <% } %>
-
-          <% if(listing.reviews.length > 0) {%>
-          <div class="row">
-            <h4>All Reviews</h4>
-          <% for(review of listing.reviews) { %>
-            <div class="card col-5 ms-3 mb-3">
-              <div class="card-body">
-                <h5 class="card-title">@<%= review.createdBy.username%></h5>
-                <p class="starability-result" data-rating="<%= review.rating %>">
-                  Rated: <%= review.rating %>stars
-                </p>
-                <p class="card-text"><%= review.comment %></p>
+            <!-- Key Specifications -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-circle bg-primary-light me-3">
+                    <i class="fas fa-tachometer-alt text-primary"></i>
+                  </div>
+                  <div>
+                    <p class="mb-0 text-muted small">Power</p>
+                    <p class="mb-0 fw-bold"><%= listing.vpower %></p>
+                  </div>
+                </div>
                 
-              <form method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                <button class="btn mb-2 btn-sn btn-dark">Delete</button>
-              </form>
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-circle bg-primary-light me-3">
+                    <i class="fas fa-gas-pump text-primary"></i>
+                  </div>
+                  <div>
+                    <p class="mb-0 text-muted small">Fuel Type</p>
+                    <p class="mb-0 fw-bold"><%= listing.vfuel %></p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-circle bg-primary-light me-3">
+                    <i class="fas fa-road text-primary"></i>
+                  </div>
+                  <div>
+                    <p class="mb-0 text-muted small">Daily KM Limit</p>
+                    <p class="mb-0 fw-bold"><%= listing.vlimit %> km</p>
+                  </div>
+                </div>
+                
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-circle bg-primary-light me-3">
+                    <i class="fas fa-users text-primary"></i>
+                  </div>
+                  <div>
+                    <p class="mb-0 text-muted small">Seating Capacity</p>
+                    <p class="mb-0 fw-bold"><%= listing.plimit %></p>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- Location -->
+            <div class="d-flex align-items-center mb-4">
+              <div class="icon-circle bg-primary-light me-3">
+                <i class="fas fa-map-marker-alt text-primary"></i>
+              </div>
+              <div>
+                <p class="mb-0 text-muted small">Location</p>
+                <p class="mb-0 fw-bold"><%= listing.location %>, <%= listing.city %>, <%= listing.state %></p>
+              </div>
             </div>
+
+            <!-- Vehicle Description -->
+            <div class="mb-4">
+              <h5 class="mb-3 d-flex align-items-center">
+                <i class="fas fa-info-circle text-primary me-2"></i>
+                Vehicle Description
+              </h5>
+              <div class="card bg-light p-3 border-0">
+                <% if(listing.vinfo) { %>
+                  <p class="mb-0"><%= listing.vinfo %></p>
+                <% } else { %>
+                  <p class="text-muted mb-0">No additional description provided.</p>
+                <% } %>
+              </div>
+            </div>
+
+            <!-- Owner Actions -->
+            <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+              <div class="d-flex justify-content-center gap-2 mb-4">
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary px-4">
+                  <i class="fas fa-edit me-2"></i>Edit
+                </a>
+                <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE" class="d-inline">
+                  <button class="btn btn-outline-danger px-4">
+                    <i class="fas fa-trash-alt me-2"></i>Delete
+                  </button>
+                </form>
+              </div>
             <% } %>
           </div>
-          <% } %>
-          <div class="col-8 offset-1 mb-3">
-            <h3>Where the vehicle is: </h3>
-            <div id="map"></div>
-            <script src="/js/map.js"></script>
+
+          <!-- Booking Section -->
+          <div class="card-body border-top p-4">
+            <% if (!isCurrentlyBooked) { %>
+                <h5 class="mb-3 d-flex align-items-center">
+                    <i class="fas fa-calendar-check text-primary me-2"></i>
+                    Book This Vehicle
+                </h5>
+                <form action="/listings/<%= listing._id %>/book" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="fromDate" class="form-label">From</label>
+                            <input type="date" name="from" id="fromDate" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="toDate" class="form-label">To</label>
+                            <input type="date" name="to" id="toDate" class="form-control" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Book Now</button>
+                </form>
+            <% } else { %>
+                <div class="alert alert-warning d-flex align-items-center mb-0">
+                    <i class="fas fa-exclamation-circle me-2 fs-5"></i>
+                    <div>
+                        <strong>Currently Booked</strong>
+                        <p class="mb-0 small">This vehicle is not available for the selected dates</p>
+                    </div>
+                </div>
+            <% } %>
           </div>
-          
+
+          <!-- Existing Bookings -->
+          <div class="card-body border-top p-4">
+            <h5 class="mb-3 d-flex align-items-center">
+                <i class="fas fa-calendar-alt text-primary me-2"></i>
+                Existing Bookings
+            </h5>
+            <% if (bookings.length > 0) { %>
+                <div class="row g-3">
+                    <% bookings.forEach(booking => { %>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="icon-circle-sm bg-light me-2">
+                                            <i class="fas fa-user text-muted"></i>
+                                        </div>
+                                        <h6 class="mb-0">@<%= booking.bookedBy.username %></h6>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="icon-circle-sm bg-light me-2">
+                                            <i class="fas fa-play text-muted"></i>
+                                        </div>
+                                        <p class="mb-0 small">From: <%= booking.fromDate.toDateString() %></p>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-circle-sm bg-light me-2">
+                                            <i class="fas fa-flag-checkered text-muted"></i>
+                                        </div>
+                                        <p class="mb-0 small">To: <%= booking.toDate.toDateString() %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="alert alert-light text-center mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No bookings yet
+                </div>
+            <% } %>
+          </div>
+
+          <!-- Reviews Section -->
+          <% if(listing.reviews.length > 0) { %>
+            <div class="card-body border-top p-4">
+              <h5 class="mb-3 d-flex align-items-center">
+                <i class="fas fa-star text-primary me-2"></i>
+                Customer Reviews (<%= listing.reviews.length %>)
+              </h5>
+              <% for (let review of listing.reviews) { %>
+                <div class="mb-4 pb-3 border-bottom">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0 d-flex align-items-center">
+                      <div class="icon-circle-sm bg-light me-2">
+                        <i class="fas fa-user text-muted"></i>
+                      </div>
+                      @<%= review.createdBy.username %>
+                    </h6>
+                    <div class="starability-result" data-rating="<%= review.rating %>">
+                      <%= review.rating %> <i class="fas fa-star text-warning"></i>
+                    </div>
+                  </div>
+                  <p class="card-text text-muted ps-4"><%= review.comment %></p>
+                  <% if (currUser && currUser._id.equals(review.createdBy._id)) { %>
+                    <div class="ps-4">
+                      <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                        <button class="btn btn-sm btn-outline-danger">
+                          <i class="fas fa-trash-alt me-1"></i> Delete
+                        </button>
+                      </form>
+                    </div>
+                  <% } %>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+
+          <!-- Review Form -->
+          <% if(currUser) { %>
+            <div class="card-body border-top p-4">
+              <h5 class="mb-3 d-flex align-items-center">
+                <i class="fas fa-edit text-primary me-2"></i>
+                Leave a Review
+              </h5>
+              <form method="POST" action="/listings/<%= listing._id %>/reviews">
+                <div class="mb-3">
+                  <label class="form-label">Rating</label>
+                  <fieldset class="starability-coinFlip">
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                  </fieldset>
+                </div>
+                <div class="mb-3">
+                  <label for="comment" class="form-label">Your Review</label>
+                  <textarea name="review[comment]" id="comment" class="form-control" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-paper-plane me-2"></i>Submit Review
+                </button>
+              </form>
+            </div>
+          <% } %>
+
+          <!-- Map Section -->
+          <div class="card-body border-top p-4">
+            <h5 class="mb-3 d-flex align-items-center">
+              <i class="fas fa-map-marked-alt text-primary me-2"></i>
+              Vehicle Location
+            </h5>
+            <div id="map" class="rounded" style="height: 400px; width: 100%;"></div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+
+  <script src="/js/map.js"></script>
+  <script>
+    // Responsive map resizing
+    window.addEventListener('resize', () => {
+      if (typeof map !== 'undefined') {
+        setTimeout(() => {
+          map.resize();
+        }, 200);
+      }
+    });
+  </script>
+
+  <style>
+    /* Custom Styles */
+    .icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     
-  </body>
+    .icon-circle-sm {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .bg-primary-light {
+      background-color: rgba(13, 110, 253, 0.1);
+    }
+    
+    .card-img-top {
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover .card-img-top {
+      transform: scale(1.02);
+    }
+    
+    /* Responsive map container */
+    @media (max-width: 768px) {
+      #map {
+        height: 300px !important;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      #map {
+        height: 250px !important;
+      }
+    }
+    
+    /* Description card styling */
+    .card.bg-light {
+      border-left: 3px solid #0d6efd;
+    }
+  </style>
+</body>

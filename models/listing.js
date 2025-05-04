@@ -1,60 +1,43 @@
 const mongoose = require("mongoose");
-const reviews = require("./review.js");
-const { ref } = require("joi");
 const Schema = mongoose.Schema;
-const Review=require("./review.js")
 
 const listingSchema = new Schema({
-  vname:String,
-  vtype:{
-    type:String,
-    enum:["car","bike","electric_car", "electric_bike","trending"],
-    required:true
-  },
-  vfuel:String,
-  vlimit:Number,
-  vpower:Number,
-  vinfo:String,
-  image:
-     {
-      url: String,
-      filename: String,
-      },
-  cost:Number,
-  location:String,
-  city:{
-    type:String,
-    required:true
-  },
-  state:String,
-  reviews:[
-   {
-      type:Schema.Types.ObjectId,
-      ref:"Review"
-   }
-  ],
-  owner:{
-    type:Schema.Types.ObjectId,
-    ref:"User",
-  },
-  geometry:{
-    type:{
-      type:String,
-      enum:["Point"],
-      
+    vname: String,
+    vtype: String,
+    vfuel: String,
+    vpower: String,
+    cost: Number,
+    location: String,
+    city: String,
+    state: String,
+    vlimit: Number,
+    plimit: Number, 
+    vinfo: String,
+    image: {
+        url: String,
+        filename: String,
     },
-    coordinates:{
-      type:[Number],
-      required:true
+    geometry: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true,
+        },
+        coordinates: {
+            type: [Number],
+            required: true,
+        },
     },
-  }
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review",
+        },
+    ],
 });
 
-listingSchema.post("findOneAndDelete", async (listing)=>{
-   if(listing) {
-     await Review.deleteMany({_id : {$in: listing.reviews}})
-   }
-})
-
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;
+module.exports = mongoose.model("Listing", listingSchema);

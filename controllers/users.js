@@ -41,3 +41,30 @@ module.exports.logout = (req,res)=>{
         res.redirect("/listings");
     })
 }
+
+module.exports.registerUser = async (req, res) => {
+    try {
+        console.log("Form data received:", req.body); // Debugging: Log the form data
+
+        const { username, password, email, firstName, lastName, phoneNumber } = req.body;
+
+        const newUser = new User({
+            username,
+            email,
+            firstName,
+            lastName,
+            phoneNumber,
+        });
+
+        const registeredUser = await User.register(newUser, password);
+
+        console.log("User registered:", registeredUser); // Debugging: Log the registered user
+
+        req.flash("success", "Registration successful! Welcome to Vehiclix.");
+        res.redirect("/login");
+    } catch (err) {
+        console.error("Error registering user:", err); // Debugging: Log the error
+        req.flash("error", "Failed to register user. Please try again.");
+        res.redirect("/register");
+    }
+};

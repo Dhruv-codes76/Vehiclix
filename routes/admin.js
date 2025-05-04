@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isAdminOrSuperadmin } = require("../middleware");
+const { isAdminOrSuperadmin } = require("../middleware.js");
 const User = require("../models/user");
 const Listing = require("../models/listing");
 const Booking = require("../models/booking");
@@ -17,8 +17,7 @@ router.get("/dashboard", isAdminOrSuperadmin, async (req, res) => {
             .populate("createdBy")
             .populate("listing"); // Populate the listing field
 
-        // Debugging: Log reviews to check if listing is populated
-        console.log("Reviews:", reviews);
+        console.log("Reviews:", reviews); // Debugging: Log reviews to check if listing is populated
 
         res.render("admin/dashboard", { users, listings, bookings, reviews, activeTab });
     } catch (err) {

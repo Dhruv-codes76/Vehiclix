@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Listing = require("../models/listing.js");
+const Listing = require("../models/listing"); // Ensure Listing is also imported
+const Booking = require("../models/booking"); // Import the Booking model
+const User = require("../models/user"); // Import User if needed
+const Review = require("../models/review"); // Import Review if needed
 const wrapAsync=require("../utils/wrapAsync.js");
 const { isLoggedIn, isAuthorised, validateListing }=require("../middleware.js");
 const multer = require("multer");
@@ -54,5 +57,7 @@ router
 //Edit Route
 router.get("/:id/edit",isLoggedIn, wrapAsync(listingController.editForm));
 
+//Booking
+router.post("/:id/bookings", isLoggedIn, listingController.bookVehicle);
  
-  module.exports=router; 
+module.exports=router;
