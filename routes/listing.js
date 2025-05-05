@@ -12,49 +12,22 @@ const upload = multer({ storage });
 
 const listingController = require("../controllers/listings.js");
 
-// Search Route
-router.get("/search", listingController.searchListings);
-
-// Filters
+// Route for filtering listings
 router.get("/filter", wrapAsync(listingController.filterListing));
 
-// New Route
-router.get("/new", isLoggedIn, listingController.newForm);
+// Route for displaying all listings
+router.get("/", wrapAsync(listingController.index));
 
-router
-  .route("/")
-  // Index Route
-  .get(wrapAsync(listingController.index))
-  .post(
-    isLoggedIn,
-    upload.single("listing[image]"),
-    validateListing,
-    wrapAsync(listingController.createListing)
-  );
+// Route for displaying a specific listing
+router.get("/:id", wrapAsync(listingController.showListing));
 
-router
-  .route("/:id")
-  // Show Route or Read Operation
-  .get(wrapAsync(listingController.showListing))
-  // Update Route
-  .put(
-    isLoggedIn,
-    isAuthorised,
-    upload.single("listing[image]"),
-    validateListing,
-    wrapAsync(listingController.updateListing)
-  )
-  // Delete Route
-  .delete(
-    isLoggedIn,
-    isAuthorised,
-    wrapAsync(listingController.deleteListing)
-  );
+// Route for creating a new listing
+router.post("/", wrapAsync(listingController.createListing));
 
-// Edit Route
-router.get("/:id/edit", isLoggedIn, wrapAsync(listingController.editForm));
+// Route for updating a listing
+router.put("/:id", wrapAsync(listingController.updateListing));
 
-// Booking
-router.post("/:id/bookings", isLoggedIn, listingController.bookVehicle);
+// Route for deleting a listing
+router.delete("/:id", wrapAsync(listingController.deleteListing));
 
 module.exports = router;

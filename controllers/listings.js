@@ -35,11 +35,7 @@ module.exports.showListing = async (req, res) => {
             return res.redirect("/listings");
         }
 
-        const bookings = await Booking.find({ vehicle: id });
-        const now = new Date();
-        const isCurrentlyBooked = bookings.some(booking => now >= booking.fromDate && now <= booking.toDate);
-
-        res.render("listings/show", { listing, bookings, isCurrentlyBooked });
+        res.render("listings/show", { listing });
     } catch (err) {
         console.error("Error fetching listing details:", err);
         req.flash("error", "Failed to load listing details.");
@@ -117,14 +113,10 @@ module.exports.deleteListing = async (req, res) => {
 
 module.exports.filterListing = async (req, res) => {
     const { category } = req.query; // Extract the category from the query string
-    let filter = {};
-
-    if (category) {
-        filter["vtype"] = category; // Ensure this matches your Listing model
-    }
-
     try {
+        const filter = category ? { vtype: category } : {}; // Filter by category if provided
         const allListings = await Listing.find(filter);
+
         res.render("listings/index", { allListings, category }); // Pass category to the template
     } catch (err) {
         console.error("Error fetching filtered listings:", err);
