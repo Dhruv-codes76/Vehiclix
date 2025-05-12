@@ -116,3 +116,191 @@ body{
     height: 400px;
     width: 80vh; 
 }
+/* Index Route */
+/* === FILTERS === */
+#fill {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    scrollbar-width: thin;
+    flex-wrap: nowrap;
+  }
+  
+  #filters {
+    display: flex;
+    flex-grow: 1;
+    gap: 0.75rem;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+  }
+  
+  .filter1 {
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  
+  .filter1:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+  
+  .filter1.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+  
+  .material-icons {
+    font-size: 1rem;
+  }
+  
+  .tax-toggle {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0.4rem 0.75rem;
+    border-radius: 50px;
+    margin-bottom: 21px;
+    font-size: 0.85rem;
+  }
+  
+  /* === LISTINGS GRID & CARDS === */
+  #listing-grid.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    justify-content: center;
+  }
+  
+  .listing-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    max-width: 300px !important;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .listing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+  
+  .listing-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .card-body b {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: 0.2px;
+  }
+  
+  .vehicle-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    color: #555;
+    border-top: 1px solid #eee;
+    padding-top: 0.6rem;
+  }
+  
+  .vehicle-details span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    line-height: 1.4;
+  }
+  
+  .vehicle-details i {
+    color: #007bff;
+    width: 20px;
+    font-size: 0.95rem;
+  }
+  
+  /* Improved Price Styling */
+  .price-container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .base-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+  }
+  
+  .tax-info {
+    font-size: 0.8rem;
+    color: #666;
+    display: none;
+  }
+  
+  .total-price {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #007bff;
+    display: none;
+    margin-top: 0.2rem;
+  }
+  
+  .price-divider {
+    display: none;
+    font-size: 0.8rem;
+    color: #999;
+    text-align: center;
+    margin: 0.2rem 0;
+  }
+  
+  /* Responsive widths */
+  @media (max-width: 600px) {
+    .listing-card {
+      max-width: 92% !important;
+    }
+  }
+  
+  @media (min-width: 601px) and (max-width: 991px) {
+    .listing-card {
+      max-width: 46% !important;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .listing-card {
+      max-width: 30% !important;
+    }
+  }
+  
