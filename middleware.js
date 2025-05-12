@@ -1,8 +1,10 @@
 const Listing = require("./models/listing.js");
 const Review = require("./models/review.js");
+const Booking = require("./models/booking");
 const ExpressError=require("./utils/ExpressError.js");
 const {listingSchema} = require("./schema.js");
 const { reviewSchema } =require("./schema.js")
+const mongoose = require("mongoose");
 
 
 module.exports.isLoggedIn = (req,res,next) => {
@@ -70,4 +72,34 @@ module.exports.isAdminOrSuperadmin = (req, res, next) => {
         return res.redirect("/");
     }
     next();
+};
+
+module.exports.isCurrentlyBooked = async (req, res, next) => {
+    const { id } = req.params;
+
+    // Validate that the id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        req.flash("error", "Invalid vehicle ID.");
+        return res.redirect("/listings");
+    }
+
+    try {
+        // Fetch bookings for the current listing
+        const bookings = await Booking.find({ vehicle: id });
+
+        // Check if the vehicle is currently booked
+        const now = new Date();
+        const isCurrentlyBooked = bookings.some(booking => {
+            return now >= booking.fromDate && now <= booking.toDate;
+        });
+
+        // Attach the result to the request object
+        req.isCurrentlyBooked = isCurrentlyBooked;
+        req.bookings = bookings; // Attach bookings for further use in the controller
+        next();
+    } catch (err) {
+        console.error("Error checking booking status:", err);
+        req.flash("error", "Failed to check booking status.");
+        res.redirect("/listings");
+    }
 };

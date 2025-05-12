@@ -187,22 +187,22 @@
 
   <div id="fill">
     <div id="filters">
-      <a class="filter1 <%= !category ? 'active' : '' %>" href="/listings">
-          <span class="material-icons">clear_all</span> All
+      <a class="filter1 <%= !category ? 'active' : '' %>" href="/listings<%= city ? '/filter?city=' + city : '' %>">
+        <span class="material-icons">clear_all</span> All
       </a>
-      <a class="filter1 <%= category === 'car' ? 'active' : '' %>" href="/listings/filter?category=car">
-          <span class="material-icons">local_taxi</span> Cars
+      <a class="filter1 <%= category === 'car' ? 'active' : '' %>" href="/listings/filter?category=car<%= city ? '&city=' + city : '' %>">
+        <span class="material-icons">local_taxi</span> Cars
       </a>
-      <a class="filter1 <%= category === 'bike' ? 'active' : '' %>" href="/listings/filter?category=bike">
-          <span class="material-icons">motorcycle</span> Bikes
+      <a class="filter1 <%= category === 'bike' ? 'active' : '' %>" href="/listings/filter?category=bike<%= city ? '&city=' + city : '' %>">
+        <span class="material-icons">motorcycle</span> Bikes
       </a>
-      <a class="filter1 <%= category === 'electric_car' ? 'active' : '' %>" href="/listings/filter?category=electric_car">
-          <span class="material-icons">electric_car</span> Electric Car
+      <a class="filter1 <%= category === 'electric_car' ? 'active' : '' %>" href="/listings/filter?category=electric_car<%= city ? '&city=' + city : '' %>">
+        <span class="material-icons">electric_car</span> Electric Car
       </a>
-      <a class="filter1 <%= category === 'electric_bike' ? 'active' : '' %>" href="/listings/filter?category=electric_bike">
-          <span class="material-icons">electric_bike</span> Electric Bike
+      <a class="filter1 <%= category === 'electric_bike' ? 'active' : '' %>" href="/listings/filter?category=electric_bike<%= city ? '&city=' + city : '' %>">
+        <span class="material-icons">electric_bike</span> Electric Bike
       </a>
-  </div>
+    </div>
     <div class="tax-toggle">
       <div class="form-check-reverse form-switch">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -225,12 +225,13 @@
               <span><i class="fas fa-gas-pump"></i> <%= listing.vfuel %></span>
               <span><i class="fas fa-road"></i> <%= listing.vlimit %> km/day</span>
               <span><i class="fas fa-bolt"></i> <%= listing.vpower %> HP</span>
+              <span><i class="fas fa-user-friends"></i> <%= listing.plimit %> passengers</span>
             </div>
             <div class="price-container">
               <div class="base-price">₹<%= listing.cost %> <span>/day</span></div>
               <div class="tax-info">+ ₹<%= Math.round(listing.cost * 0.18) %> GST (18%)</div>
               <div class="price-divider">───────</div>
-              <div class="total-price">₹<%= Math.round(listing.cost * 1.18) %> <span>/day</span></div>
+              <div class="total-price mb-2">₹<%= Math.round(listing.cost * 1.18) %> <span>/day</span></div>
             </div>
           </div>
         </a>

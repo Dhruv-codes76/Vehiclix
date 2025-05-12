@@ -10,7 +10,7 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 module.exports.index = async (req, res) => {
     try {
         const allListings = await Listing.find({});
-        res.render("listings/index", { allListings, category: null }); // Pass category as null
+        res.render("listings/index", { allListings, category: null, city: null });
     } catch (err) {
         console.error("Error fetching listings:", err);
         req.flash("error", "Failed to load listings.");
@@ -20,7 +20,7 @@ module.exports.index = async (req, res) => {
 
 module.exports.newForm = (req, res) => {
     res.render("listings/new.ejs");
-}
+};
 
 module.exports.showListing = async (req, res) => {
     const { id } = req.params;
@@ -35,7 +35,10 @@ module.exports.showListing = async (req, res) => {
             return res.redirect("/listings");
         }
 
-        res.render("listings/show", { listing });
+        const isCurrentlyBooked = req.isCurrentlyBooked;
+        const bookings = req.bookings;
+
+        res.render("listings/show", { listing, bookings, isCurrentlyBooked });
     } catch (err) {
         console.error("Error fetching listing details:", err);
         req.flash("error", "Failed to load listing details.");
@@ -112,12 +115,21 @@ module.exports.deleteListing = async (req, res) => {
 };
 
 module.exports.filterListing = async (req, res) => {
-    const { category } = req.query; // Extract the category from the query string
-    try {
-        const filter = category ? { vtype: category } : {}; // Filter by category if provided
-        const allListings = await Listing.find(filter);
+    const { category, city } = req.query;
 
-        res.render("listings/index", { allListings, category }); // Pass category to the template
+    try {
+        let filter = {};
+
+        if (category) {
+            filter.vtype = category;
+        }
+
+        if (city) {
+            filter.city = { $regex: city, $options: "i" };
+        }
+
+        const allListings = await Listing.find(filter);
+        res.render("listings/index", { allListings, category: category || null, city: city || null });
     } catch (err) {
         console.error("Error fetching filtered listings:", err);
         req.flash("error", "Failed to load filtered listings.");
@@ -135,10 +147,10 @@ module.exports.searchListings = async (req, res) => {
 
     try {
         const allListings = await Listing.find(filter);
-        res.render("listings/index.ejs", { allListings });
+        res.render("listings/index.ejs", { allListings, category: null, city: query });
     } catch (err) {
-        console.error(err);
-        req.flash("error", "Error fetching search results");
+        console.error("Error fetching search results:", err);
+        req.flash("error", "Error fetching search results.");
         res.redirect("/listings");
     }
 };

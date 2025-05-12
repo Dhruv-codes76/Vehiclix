@@ -11,15 +11,18 @@ const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 const listingController = require("../controllers/listings.js");
+const middleware = require("../middleware");
 
 // Route for filtering listings
 router.get("/filter", wrapAsync(listingController.filterListing));
 
+router.get("/search", wrapAsync(listingController.searchListings)); // Search route
+
 // Route for displaying all listings
 router.get("/", wrapAsync(listingController.index));
 
-// Route for displaying a specific listing
-router.get("/:id", wrapAsync(listingController.showListing));
+// Route for displaying a specific listing with booking status
+router.get("/:id", wrapAsync(middleware.isCurrentlyBooked), wrapAsync(listingController.showListing));
 
 // Route for creating a new listing
 router.post("/", wrapAsync(listingController.createListing));
