@@ -10,9 +10,13 @@ const Review = require("../models/review");
 router.get("/dashboard", isAdminOrSuperadmin, async (req, res) => {
     try {
         const activeTab = req.query.tab || "users";
+        const sortField = req.query.sort || "fromDate"; // Default to fromDate
         const users = await User.find({});
         const listings = await Listing.find({}).populate("owner");
-        const bookings = await Booking.find({}).populate("vehicle").populate("bookedBy");
+        const bookings = await Booking.find({})
+            .populate("vehicle")
+            .populate("bookedBy")
+            .sort({ [sortField]: -1 }); // Sort by the specified field
         const reviews = await Review.find({}).populate("createdBy").populate("listing");
 
         res.render("admin/dashboard", { users, listings, bookings, reviews, activeTab });

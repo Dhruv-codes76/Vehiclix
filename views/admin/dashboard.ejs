@@ -105,11 +105,22 @@
                                 <div class="booking-card">
                                     <div class="booking-info">
                                         <p>
-                                            <strong>Vehicle:</strong> 
-                                            <%= booking.vehicle.vname %>
-                                            <a href="/listings/<%= booking.vehicle._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                            <strong>Vehicle:</strong>
+                                            <% if (booking.vehicle) { %>
+                                                <%= booking.vehicle.vname %>
+                                                <a href="/listings/<%= booking.vehicle._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                            <% } else { %>
+                                                <span>Vehicle not found</span>
+                                            <% } %>
                                         </p>
-                                        <p><strong>Booked By:</strong> <%= booking.bookedBy.username %> (<%= booking.bookedBy.email %>)</p>
+                                        <p>
+                                            <strong>Booked By:</strong>
+                                            <% if (booking.bookedBy) { %>
+                                                <%= booking.bookedBy.username %> (<%= booking.bookedBy.email %>)
+                                            <% } else { %>
+                                                <span>User not found</span>
+                                            <% } %>
+                                        </p>
                                         <p><strong>From:</strong> <%= booking.fromDate.toDateString() %></p>
                                         <p><strong>To:</strong> <%= booking.toDate.toDateString() %></p>
                                     </div>
@@ -130,10 +141,21 @@
                                 <div class="booking-info">
                                     <p>
                                         <strong>Vehicle:</strong> 
-                                        <%= booking.vehicle.vname %>
-                                        <a href="/listings/<%= booking.vehicle._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                        <% if (booking.vehicle) { %>
+                                            <%= booking.vehicle.vname %>
+                                            <a href="/listings/<%= booking.vehicle._id %>" class="btn view" title="View Listing" style="margin-left: 0.5rem;">👁</a>
+                                        <% } else { %>
+                                            <span>Vehicle not found</span>
+                                        <% } %>
                                     </p>
-                                    <p><strong>Booked By:</strong> <%= booking.bookedBy.username %> (<%= booking.bookedBy.email %>)</p>
+                                    <p>
+                                        <strong>Booked By:</strong>
+                                        <% if (booking.bookedBy) { %>
+                                            <%= booking.bookedBy.username %> (<%= booking.bookedBy.email %>)
+                                        <% } else { %>
+                                            <span>User not found</span>
+                                        <% } %>
+                                    </p>
                                     <p><strong>From:</strong> <%= booking.fromDate.toDateString() %></p>
                                     <p><strong>To:</strong> <%= booking.toDate.toDateString() %></p>
                                 </div>

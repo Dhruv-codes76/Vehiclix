@@ -143,10 +143,20 @@ module.exports.updateListing = async (req, res) => {
 };
 
 module.exports.deleteListing = async (req, res) => {
-    let { id } = req.params;
-    let deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    req.flash("success", "Listing Deleted");
+    const { id } = req.params;
+
+    // Delete associated bookings
+    await Booking.deleteMany({ vehicle: id });
+
+    // Delete the listing
+    const deletedListing = await Listing.findByIdAndDelete(id);
+
+    if (!deletedListing) {
+        req.flash("error", "Listing not found.");
+        return res.redirect("/listings");
+    }
+
+    req.flash("success", "Listing and associated bookings deleted.");
     res.redirect("/listings");
 };
 
