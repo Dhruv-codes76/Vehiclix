@@ -3,9 +3,11 @@
   <br>
   <form
    method="POST" 
-   action="/listings/<%= listing._id %>?_method=PUT" 
-   novalidate class="needs-validation" 
-   enctype="multipart/form-data">
+   action="/listings/<%= listing._id %>?_method=PUT"
+   enctype="multipart/form-data"
+   novalidate
+   class="needs-validation"
+    >
     <div class="row offset-1">
       <div class="col-9">
         <h3 style="text-align: center;">Edit the Vehicle</h3>
@@ -16,84 +18,18 @@
            value="<%= listing.vname %>" 
            type="text" 
            class="form-control" 
+           id="vname"
            required/>
         </div>
 
-        <div class="row mt-3">
-          <div class="col-6">
-            <div class="mb-3">
-              <label for="vtype" class="form-label">Type</label>
-              <select id="vtype" name="listing[vtype]" class="form-control" required>
-                <option value="car" <%= listing.vtype === 'car' ? 'selected' : '' %>>Car</option>
-                <option value="electric_car" <%= listing.vtype === 'electric_car' ? 'selected' : '' %>>Electric Car</option>
-                <option value="bike" <%= listing.vtype === 'bike' ? 'selected' : '' %>>Bike</option>
-                <option value="electric_bike" <%= listing.vtype === 'electric_bike' ? 'selected' : '' %>>Electric Bike</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="mb-3">
-              <label for="vfuel" class="form-label">Fuel</label>
-              <select id="vfuel" name="listing[vfuel]" class="form-control" required>
-                <option value="petrol" <%= listing.vfuel === 'petrol' ? 'selected' : '' %>>Petrol</option>
-                <option value="diesel" <%= listing.vfuel === 'diesel' ? 'selected' : '' %>>Diesel</option>
-                <option value="electric" <%= listing.vfuel === 'electric' ? 'selected' : '' %>>Electric</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-6">
-            <div class="mb-3">
-              <label for="vlimit" class="form-label">Daily KM Limit</label>
-              <input
-               name="listing[vlimit]" 
-               value="<%= listing.vlimit %>" 
-               type="number" 
-               class="form-control" 
-               required/>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="mb-3">
-              <label for="vpower" class="form-label">Power (hp)</label>
-              <input
-               name="listing[vpower]" 
-               value="<%= listing.vpower %>" 
-               type="number" 
-               class="form-control" 
-               required/>
-            </div>
-          </div>
-        </div>
-  
         <div class="mb-3">
-          <label for="vinfo" class="form-label">Information</label>
-          <textarea name="listing[vinfo]" class="form-control"><%= listing.vinfo %></textarea>
-        </div>
-
-        <div class="mb-3">
-          Original Listing Image <br>
-          <img src="<%= originalImageUrl %>" alt="">
-        </div>
-
-        <label for="image" class="form-label">Upload New Image</label>
-        <div class="mb-3">
-          <input
-           name="listing[image]" 
-           type="file" 
-           class="form-control" />
-        </div>
-      
-        <div class="mb-3">
-          <label for="cost" class="form-label">Cost</label>
-          <input
-           name="listing[cost]" 
-           value="<%= listing.cost %>" 
-           type="text" 
-           class="form-control" 
-           required/>
+          <label for="vtype" class="form-label">Type</label>
+          <select name="listing[vtype]" id="vtype" class="form-select" required>
+            <option value="car" <%= listing.vtype === 'car' ? 'selected' : '' %>>Car</option>
+            <option value="electric_car" <%= listing.vtype === 'electric_car' ? 'selected' : '' %>>Electric Car</option>
+            <option value="bike" <%= listing.vtype === 'bike' ? 'selected' : '' %>>Bike</option>
+            <option value="electric_bike" <%= listing.vtype === 'electric_bike' ? 'selected' : '' %>>Electric Bike</option>
+          </select>
         </div>
         
         <div class="mb-3">
@@ -103,9 +39,35 @@
           value="<%= listing.location %>"
           type="text" 
           class="form-control" 
+          id="location"
+          placeholder="Enter a location (e.g., city or address)"
           required/>
         </div>
 
+        <div class="mb-3">
+          <label for="cost" class="form-label">Cost</label>
+          <input
+           name="listing[cost]" 
+           value="<%= listing.cost %>" 
+           type="text" 
+           class="form-control" 
+           id="cost"
+           required/>
+        </div>
+        
+        <div class="mb-3">
+            <label>Current Image:</label>
+            <% if (listing.image && listing.image.url) { %>
+                <img src="<%= listing.image.url %>" alt="Current Image" style="max-width: 200px; max-height: 200px;">
+            <% } else { %>
+                <p>No image uploaded.</p>
+            <% } %>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload New Image</label>
+            <input type="file" name="image" id="image" class="form-control">
+        </div>
+      
         <div class="row">
           <div class="col-6">
             <div class="mb-3">

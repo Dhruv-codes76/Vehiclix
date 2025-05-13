@@ -1,36 +1,43 @@
 const express = require("express");
 const router = express.Router();
-const Listing = require("../models/listing"); // Ensure Listing is also imported
-const Booking = require("../models/booking"); // Import the Booking model
-const User = require("../models/user"); // Import User if needed
-const Review = require("../models/review"); // Import Review if needed
-const wrapAsync = require("../utils/wrapAsync.js");
-const { isLoggedIn, isAuthorised, validateListing } = require("../middleware.js");
+const wrapAsync = require("../utils/wrapAsync");
+const { isLoggedIn, isAuthorised } = require("../middleware");
 const multer = require("multer");
-const { storage } = require("../cloudConfig.js");
+const { storage } = require("../cloudConfig");
 const upload = multer({ storage });
+const listingController = require("../controllers/listings");
 
-const listingController = require("../controllers/listings.js");
-const middleware = require("../middleware");
+// Correct route order - NEW comes first
+router.get("/new", isLoggedIn, listingController.newForm);
 
-// Route for filtering listings
+// Filter/search routes
 router.get("/filter", wrapAsync(listingController.filterListing));
+router.get("/search", wrapAsync(listingController.searchListings));
 
-router.get("/search", wrapAsync(listingController.searchListings)); // Search route
+// Main listings routes
+router.route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    upload.single('listing[image]'), // Ensure this matches form field name
+    wrapAsync(listingController.createListing) // Removed validateListing temporarily
+  );
 
-// Route for displaying all listings
-router.get("/", wrapAsync(listingController.index));
+// ID-based routes
+router.route("/:id")
+  .get(wrapAsync(listingController.showListing))
+  .put(
+    isLoggedIn,
+    isAuthorised,
+    upload.single('listing[image]'),
+    wrapAsync(listingController.updateListing))
+  .delete(
+    isLoggedIn,
+    isAuthorised,
+    wrapAsync(listingController.deleteListing));
 
-// Route for displaying a specific listing with booking status
-router.get("/:id", wrapAsync(middleware.isCurrentlyBooked), wrapAsync(listingController.showListing));
-
-// Route for creating a new listing
-router.post("/", wrapAsync(listingController.createListing));
-
-// Route for updating a listing
-router.put("/:id", wrapAsync(listingController.updateListing));
-
-// Route for deleting a listing
-router.delete("/:id", wrapAsync(listingController.deleteListing));
+// Additional routes
+router.post("/:id/book", isLoggedIn, wrapAsync(listingController.bookVehicle));
+router.get("/:id/edit", isLoggedIn, isAuthorised, wrapAsync(listingController.editForm));
 
 module.exports = router;

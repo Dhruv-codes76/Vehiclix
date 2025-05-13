@@ -58,8 +58,8 @@
                                             <button type="submit" class="btn promote">Promote to Admin</button>
                                         </form>
                                     <% } else if (user.role === 'admin') { %>
-                                        <form action="/admin/users/<%= user._id %>/demote?_method=PUT" method="POST">
-                                            <button type="submit" class="btn demote">Remove Admin</button>
+                                       <form action="/admin/users/<%= user._id %>/demote?_method=PUT" method="POST">
+                                           <button type="submit" class="btn demote">Remove Admin</button>
                                         </form>
                                     <% } %>
                                     <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST">

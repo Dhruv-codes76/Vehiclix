@@ -38,6 +38,12 @@
     margin-bottom: 2rem;
   }
   
+  .sidebar-header h2 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0;
+}
+  
   .sidebar-toggle {
     display: none;
     background: none;

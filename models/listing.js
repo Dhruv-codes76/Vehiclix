@@ -2,17 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
-    vname: String,
-    vtype: String,
-    vfuel: String,
-    vpower: String,
-    cost: Number,
-    location: String,
-    city: String,
-    state: String,
-    vlimit: Number,
-    plimit: Number, 
-    vinfo: String,
+    vname: { type: String, required: true },
+    vtype: { type: String, required: true },
+    vfuel: { type: String, required: true },
+    vpower: { type: String, required: true },
+    cost: { type: Number, required: true },
+    location: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    vlimit: { type: Number, required: true },
+    plimit: { type: Number, required: true },
+    vinfo: { type: String, required: true },
     image: {
         url: String,
         filename: String,
@@ -31,6 +31,7 @@ const listingSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
+        required: true,
     },
     reviews: [
         {

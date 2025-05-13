@@ -9,7 +9,6 @@ module.exports.listingSchema = Joi.object({
     plimit: Joi.number().required().min(1),
     vpower: Joi.number().required(),
     vinfo: Joi.string().required(),
-    image: Joi.string().allow("", null),
     cost: Joi.number().required().min(0),
     location: Joi.string().required(),
     city: Joi.string().required(),

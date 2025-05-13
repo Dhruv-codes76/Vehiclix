@@ -8,10 +8,11 @@ const reviewSchema = new Schema({
     },
     comment: {
         type: String,
+        required: true,
     },
     createdBy: {
         type: Schema.Types.ObjectId,
-        ref: "User", // Reference the User model
+        ref: "User",
         required: true,
     },
     listing: {
