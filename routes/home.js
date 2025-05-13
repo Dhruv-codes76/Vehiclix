@@ -4,7 +4,7 @@ const homepageController = require("../controllers/homepage.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 
 // Homepage Route
-router.get("/home", homepageController.homepage);
+router.get("/", homepageController.homepage);
 
 router.get("/privacy", (req, res) => {
   res.render("homepage/privacy");
