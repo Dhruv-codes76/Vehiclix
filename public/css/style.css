@@ -208,8 +208,12 @@ body{
   
   .listing-card img {
     width: 100%;
-    height: 190px;
+    height: 200px;         /* or your preferred height */
     object-fit: cover;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;      /* Remove if you want sharp corners on the image */
   }
   
   .card-body {
@@ -303,4 +307,16 @@ body{
       max-width: 30% !important;
     }
   }
-  
+
+  /* Default size for desktop/tablet */
+#filters .material-icons {
+  font-size: 1.3rem;
+  vertical-align: middle;
+}
+
+/* Smaller size for mobile */
+@media (max-width: 600px) {
+  #filters .material-icons {
+    font-size: 1rem;
+  }
+}
