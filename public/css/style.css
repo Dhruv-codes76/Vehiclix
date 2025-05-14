@@ -14,7 +14,7 @@ body{
 /* Navbar */
 .navbar{
     height: 5rem;
-    /* background-color: rgb(156, 55, 55) !important; */
+    
 }
 
 .fa-truck-fast{
@@ -58,7 +58,7 @@ body{
     
     border:none !important;
     margin-bottom: 2rem;
-    /* background-color: #edeaf5 !important; */
+    
 }
 
 .card-img-top{
@@ -92,7 +92,7 @@ body{
 /* Add new vehicle */
 
 .add-btn{
-    /* background-color: #09d4f4 !important; */
+    
     border: none !important;
 }
 
@@ -208,12 +208,12 @@ body{
   
   .listing-card img {
     width: 100%;
-    height: 200px;         /* or your preferred height */
+    height: 200px;         
     object-fit: cover;
     display: block;
     margin: 0;
     padding: 0;
-    border-radius: 0;      /* Remove if you want sharp corners on the image */
+    border-radius: 0;      
   }
   
   .card-body {
