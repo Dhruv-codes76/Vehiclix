@@ -136,7 +136,7 @@ app.use((req,res,next)=>{
 
 app.use("/", homeRoutes);
 app.use("/listings", listingRouter)
-app.use("/listings/:id/reviews", reviewRouter)
+app.use("/listings/:id", reviewRouter)
 app.use("/", userRouter)
 app.use("/admin", adminRoutes);
 
