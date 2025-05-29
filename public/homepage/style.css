@@ -11,10 +11,12 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.7;
             color: var(--text);
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-            background-color: #ffffff;
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            overflow-x: hidden;
         }
         .terms-container {
             background: white;
@@ -103,10 +105,12 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.7;
             color: var(--text);
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
             background-color: #f9fafb;
+            overflow-x: hidden;
         }
         
         .policy-container {
