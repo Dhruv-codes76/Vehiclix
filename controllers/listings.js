@@ -44,16 +44,19 @@ module.exports.showListing = async (req, res) => {
     }
 
     // Fetch bookings for the vehicle
-    const bookings = await Booking.find({ vehicle: id }).populate("bookedBy");
+const bookings = await Booking.find({ vehicle: id })
+    .populate("bookedBy")
+    .sort({ createdAt: -1 });  // Sort descending by fromDate (latest first)
 
-    // Check if the vehicle is currently booked
+    // ✅ Update this logic:
     const today = new Date();
     const isCurrentlyBooked = bookings.some(
-        (booking) => booking.fromDate <= today && booking.toDate >= today
+        booking => booking.isCurrentlyBooked && booking.fromDate <= today && booking.toDate >= today
     );
 
     res.render("listings/show", { listing, bookings, isCurrentlyBooked });
 };
+
 
 module.exports.createListing = async (req, res) => {
     try {
@@ -222,11 +225,13 @@ module.exports.bookVehicle = async (req, res) => {
 
     const existingBookings = await Booking.find({
         vehicle: id,
-        $or: [{ fromDate: { $lte: toDate }, toDate: { $gte: fromDate } }],
+        isCurrentlyBooked: true,
+        fromDate: { $lte: toDate },
+        toDate: { $gte: fromDate }
     });
 
     if (existingBookings.length > 0) {
-        req.flash("error", "Vehicle is already booked for selected dates");
+        req.flash("error", "Vehicle is already booked for selected dates.");
         return res.redirect(`/listings/${id}`);
     }
 
@@ -235,9 +240,50 @@ module.exports.bookVehicle = async (req, res) => {
         bookedBy: req.user._id,
         fromDate,
         toDate,
+        isCurrentlyBooked: true
     });
 
     await booking.save();
     req.flash("success", "Vehicle booked successfully!");
     res.redirect(`/listings/${id}`);
+};
+
+module.exports.userCancelBooking = async (req, res) => {
+    const bookingId = req.params.id;
+    const userId = req.user._id;
+
+    try {
+        const booking = await Booking.findById(bookingId);
+
+        if (!booking) {
+            req.flash("error", "Booking not found.");
+            return res.redirect("back");
+        }
+
+        if (!booking.bookedBy.equals(userId)) {
+            req.flash("error", "You are not authorized to cancel this booking.");
+            return res.redirect("back");
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize to start of day
+        
+        const lastBookingDay = new Date(booking.toDate);
+        lastBookingDay.setHours(0, 0, 0, 0);
+
+        if (today > lastBookingDay) {
+            req.flash("error", "You can only cancel before or on the last day of booking.");
+            return res.redirect("back");
+        }
+
+        booking.isCurrentlyBooked = false;
+        await booking.save();
+
+        req.flash("success", "Booking cancelled successfully.");
+        res.redirect("back");
+    } catch (err) {
+        console.error("User Cancel Booking Error:", err);
+        req.flash("error", "Failed to cancel booking.");
+        res.redirect("back");
+    }
 };

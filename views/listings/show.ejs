@@ -156,79 +156,118 @@
     </div>
 </div>
 
-         <!-- Booking Section -->
-          <div class="card-body border-top p-4">
-            <% if (!isCurrentlyBooked) { %>
-              <h5 class="mb-3 d-flex align-items-center">
-                <i class="fas fa-calendar-check text-primary me-2"></i>
-                Book This Vehicle
-              </h5>
-              <form action="/listings/<%= listing._id %>/book" method="POST">
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="fromDate" class="form-label">From</label>
-                    <input type="date" name="from" id="fromDate"   min="<%= new Date().toISOString().split('T')[0] %>"  class="form-control" required />
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="toDate" class="form-label">To</label>
-                    <input type="date" name="to" id="toDate" min="<%= new Date().toISOString().split('T')[0] %>"  class="form-control" required />
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Book Now</button>
-              </form>
-            <% } else { %>
-              <div class="text-center py-5">
-                <i class="fas fa-calendar-times fa-2x text-warning mb-3"></i>
-                <h5 class="text-danger">This vehicle is already booked at the moment.</h5>
-                <p class="text-muted">Please check back later or explore other listings.</p>
+<!-- Booking Section -->
+<%
+  const today = new Date();
+  const userBooking = bookings.find(b =>
+    b.bookedBy && currUser &&
+    b.bookedBy._id.equals(currUser._id) &&
+    b.isCurrentlyBooked &&
+    today >= b.fromDate && today <= b.toDate
+  );
+%>
+<div class="card-body border-top p-4">
+  <% if (userBooking) { %>
+    <h5 class="mb-3 d-flex align-items-center">
+      <i class="fas fa-calendar-check text-primary me-2"></i>
+      Your Current Booking
+    </h5>
+    <p><strong>From:</strong> <%= userBooking.fromDate.toDateString() %></p>
+    <p><strong>To:</strong> <%= userBooking.toDate.toDateString() %></p>
+    <form method="POST" action="/bookings/<%= userBooking._id %>/cancel-by-user">
+      <button type="submit" class="btn btn-danger">Cancel My Booking</button>
+    </form>
+
+  <% } else if (!isCurrentlyBooked) { %>
+    <h5 class="mb-3 d-flex align-items-center">
+      <i class="fas fa-calendar-check text-primary me-2"></i>
+      Book This Vehicle
+    </h5>
+    <form action="/listings/<%= listing._id %>/book" method="POST">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="fromDate" class="form-label">From</label>
+          <input type="date" name="from" id="fromDate" min="<%= new Date().toISOString().split('T')[0] %>" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="toDate" class="form-label">To</label>
+          <input type="date" name="to" id="toDate" min="<%= new Date().toISOString().split('T')[0] %>" class="form-control" required />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Book Now</button>
+    </form>
+
+  <% } else { %>
+    <div class="text-center py-5">
+      <i class="fas fa-calendar-times fa-2x text-warning mb-3"></i>
+      <h5 class="text-danger">This vehicle is already booked at the moment.</h5>
+      <p class="text-muted">Please check back later or explore other listings.</p>
+    </div>
+  <% } %>
+</div>
+
+<!-- Existing Bookings -->
+<div class="card-body border-top p-4">
+  <h5 class="mb-3 d-flex align-items-center">
+    <i class="fas fa-calendar-alt text-primary me-2"></i>
+    Existing Bookings
+  </h5>
+  <% if (bookings.length > 0) { 
+     const sortedBookings = bookings.slice().sort((a, b) => new Date(b.fromDate) - new Date(a.fromDate));
+%>
+  <div class="row g-3">
+    <% sortedBookings.forEach(booking => { %>
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <div class="icon-circle-sm bg-light me-2">
+                <i class="fas fa-user text-muted"></i>
               </div>
-            <% } %>
-          </div>
+              <h6 class="mb-0">
+                @<%= booking.bookedBy?.username || "User" %>
+              </h6>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <div class="icon-circle-sm bg-light me-2">
+                <i class="fas fa-play text-muted"></i>
+              </div>
+              <p class="mb-0 small">From: <%= booking.fromDate.toDateString() %></p>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="icon-circle-sm bg-light me-2">
+                <i class="fas fa-flag-checkered text-muted"></i>
+              </div>
+              <p class="mb-0 small">To: <%= booking.toDate.toDateString() %></p>
+            </div>
 
-          <!-- Existing Bookings -->
-          <div class="card-body border-top p-4">
-            <h5 class="mb-3 d-flex align-items-center">
-                <i class="fas fa-calendar-alt text-primary me-2"></i>
-                Existing Bookings
-            </h5>
-            <% if (bookings.length > 0) { %>
-                <div class="row g-3">
-                    <% bookings.forEach(booking => { %>
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="icon-circle-sm bg-light me-2">
-                                            <i class="fas fa-user text-muted"></i>
-                                        </div>
-                                        <h6 class="mb-0">@<%= booking.bookedBy.username %></h6>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="icon-circle-sm bg-light me-2">
-                                            <i class="fas fa-play text-muted"></i>
-                                        </div>
-                                        <p class="mb-0 small">From: <%= booking.fromDate.toDateString() %></p>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle-sm bg-light me-2">
-                                            <i class="fas fa-flag-checkered text-muted"></i>
-                                        </div>
-                                        <p class="mb-0 small">To: <%= booking.toDate.toDateString() %></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }); %>
-                </div>
-            <% } else { %>
-                <div class="alert alert-light text-center mb-0">
-                    <i class="fas fa-info-circle me-2"></i>
-                    No bookings yet
-                </div>
+            <% if (
+              currUser && 
+              booking.bookedBy && 
+              currUser._id.equals(booking.bookedBy._id) && 
+              booking.isCurrentlyBooked && 
+              new Date() <= booking.toDate
+            ) { %>
+              <form method="POST" action="/bookings/<%= booking._id %>/cancel-by-user">
+                <button class="btn btn-sm btn-warning mt-2">Cancel My Booking</button>
+              </form>
             <% } %>
-          </div>
 
-          <!-- Reviews and Review Form remain unchanged -->
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+  <% } else { %>
+    <div class="alert alert-light text-center mb-0">
+      <i class="fas fa-info-circle me-2"></i>
+      No bookings yet
+    </div>
+  <% } %>
+</div>
+
+
+        
 <% if(currUser) { %>
   <div class="card-body border-top p-4">
     <h5 class="mb-3 d-flex align-items-center">
@@ -293,7 +332,7 @@
 <% } %>
 
 
-          <!-- Map Section -->
+          //  Map Section 
           <div class="card-body border-top p-4">
             <h5 class="mb-3 d-flex align-items-center">
               <i class="fas fa-map-marked-alt text-primary me-2"></i>

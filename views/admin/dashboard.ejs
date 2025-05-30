@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="/admin/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/image/logoII.png">
-
 </head>
 <body>
 
@@ -126,6 +125,13 @@
                                         <p><strong>From:</strong> <%= booking.fromDate.toDateString() %></p>
                                         <p><strong>To:</strong> <%= booking.toDate.toDateString() %></p>
                                     </div>
+
+                                    <!-- Cancel Booking Button -->
+                                    <% if (booking.isCurrentlyBooked) { %>
+                                        <form method="POST" action="/admin/bookings/<%= booking._id %>/cancel">
+                                            <button class="btn cancel">Cancel Booking</button>
+                                        </form>
+                                    <% } %>
                                 </div>
                             <% }) %>
                         <% } else { %>

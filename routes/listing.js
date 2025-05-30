@@ -39,5 +39,6 @@ router.route("/:id")
 
 router.post("/:id/book", isLoggedIn, wrapAsync(listingController.bookVehicle));
 router.get("/:id/edit", isLoggedIn, isAuthorised, wrapAsync(listingController.editForm));
+router.post("/:id/cancel-by-user", isLoggedIn, listingController.userCancelBooking);
 
 module.exports = router;

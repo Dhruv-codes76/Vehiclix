@@ -135,7 +135,7 @@ module.exports.deleteReview = async (req, res) => {
     res.redirect("/admin/dashboard?tab=reviews");
 }
 
-module.exports.cancelBooking=async (req, res) => {
+module.exports.cancelBooking = async (req, res) => {
     try {
         const booking = await Booking.findById(req.params.id);
         const now = new Date();
@@ -149,7 +149,8 @@ module.exports.cancelBooking=async (req, res) => {
         ) {
             booking.isCurrentlyBooked = false;
             await booking.save();
-            req.flash("success", "Booking cancelled successfully.");
+
+            req.flash("success", "Booking cancelled successfully. Vehicle is now available.");
         } else {
             req.flash("error", "Only currently active bookings can be cancelled.");
         }
@@ -160,4 +161,4 @@ module.exports.cancelBooking=async (req, res) => {
         req.flash("error", "Something went wrong.");
         res.redirect("/admin/dashboard?tab=bookings");
     }
-}
+};
