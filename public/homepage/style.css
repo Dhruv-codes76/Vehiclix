@@ -7,16 +7,22 @@
             --border: #e2e8f0;
             --warning: #dc2626;
         }
+        html, body {
+          width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          overflow-x: hidden;
+        }
+        *, *::before, *::after {
+          box-sizing: inherit;
+        }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.7;
             color: var(--text);
-            width: 100vw;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
             background-color: #f9fafb;
-            overflow-x: hidden;
         }
         .terms-container {
             background: white;
@@ -101,16 +107,23 @@
             --warning: #f59e0b;
         }
         
+        html, body {
+          width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          overflow-x: hidden;
+        }
+        *, *::before, *::after {
+          box-sizing: inherit;
+        }
+        
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.7;
             color: var(--text);
-            width: 100vw;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
             background-color: #f9fafb;
-            overflow-x: hidden;
         }
         
         .policy-container {
@@ -270,6 +283,10 @@
   .vehicles, .reviews, .about, .newsletter, .cta {
     padding: 4rem 2rem;
     text-align: center;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
   }
 
   .vehicle-card {
